@@ -1,15 +1,17 @@
 from fastapi import FastAPI
-
 app=FastAPI()
-@app.get("/product/{product_id}")
-def get_product(product_id:int,discount: bool,currency: str):
-    price =50000
-    if discount:
-        price=price-(price*10/100)
-    return {
-        "message":"product get sucessfully",
-        "product_id":product_id,
-        "price":price,
-        "discount_applied": discount,
-        "currency":currency
-    }
+@app.get("/movie/{movie_id}")
+def get_movie(movie_id:int,language: str,premium: bool):
+    if movie_id !=10:
+        return {
+            "error":"404 movie not found"
+        }
+    price=300
+    if premium==True:
+        price+=100
+        return {
+            "movie_id":movie_id,
+            "language":language,
+            "price":price,
+            "preminm":premium 
+        }
