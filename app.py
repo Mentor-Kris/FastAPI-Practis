@@ -1,19 +1,17 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 app=FastAPI()
-@app.get("/ticket/{ticket_id}")
-def get_ticket(ticket_id:int,type:str,event:str,vip:bool):
-    if ticket_id!=1:
-        return {
-            "error":"404 ticket not found"
-        }
-    price=200
-    if vip==True:
-        price+=300
+class Product(BaseModel):
+    name: str
+    price: int
+    secret_code: str
+class UserResponse(BaseModel):
+    name:str
+    price:int
+@app.get("/product",response_model=UserResponse)
+def get_product():
     return {
-        "message":"ticket get sucessfully",
-        "ticket_id":ticket_id,
-        "type":type,
-        "event": "Concert",
-        "price":price,
-        "vip":vip
+       "name":"leptop",
+       "price":60000,
+       "secret_code":"ABC123"
     }    
