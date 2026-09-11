@@ -1,26 +1,15 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+
 app=FastAPI()
-users=[]
-class User(BaseModel):
-    name:str
-    age:int 
-@app.post("/users")
-def create_user(user:User):
-    users.append(user)
+@app.get("/product/{product_id}")
+def get_product(product_id:int,discount: bool,currency: str):
+    price =50000
+    if discount:
+        price=price-(price*10/100)
     return {
-        "message":"user created",
-        "data":user 
-    }
-@app.put("/users/{user_id}")
-def update_user(user_id:int,user:User,notify:bool):
-    if user_id<len(users):
-        users[user_id]=user
-        return {
-            "message":"user updated",
-            "notify":notify,
-            "data":user
-        }
-    return {
-        "error":"User not found"
+        "message":"product get sucessfully",
+        "product_id":product_id,
+        "price":price,
+        "discount_applied": discount,
+        "currency":currency
     }
