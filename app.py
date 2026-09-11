@@ -1,17 +1,18 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi import FastAPI,status,HTTPException
 app=FastAPI()
-class Product(BaseModel):
-    name: str
-    price: int
-    secret_code: str
-class UserResponse(BaseModel):
-    name:str
-    price:int
-@app.get("/product",response_model=UserResponse)
-def get_product():
+@app.post("/user",status_code=status.HTTP_201_CREATED)
+def get_user():
     return {
-       "name":"leptop",
-       "price":60000,
-       "secret_code":"ABC123"
-    }    
+        "message":"User created"
+    }
+@app.get("/user/{user_id}")
+def get_user(user_id:int):
+    if user_id !=1:
+        raise HTTPException(
+            status_code=404,
+            detail="user not found"
+        )
+    return {
+        "id":user_id,
+        "name":"krishna"
+    }
